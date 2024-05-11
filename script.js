@@ -1,127 +1,52 @@
-let pessoa = {
-  nome: "Ricardo",
-  idade: "28",
-  profissão:"Bilheteiro"
+function Produto(nome, preco,
+	descricao, imagem,
+	disponivel, avaliacao,
+	caracteristicas, tags, porcentagemDesconto
+) {
+	this.nome = nome;
+	this.preco = preco;
+	this.descricao = descricao
+	this.imagem = imagem;
+	this.disponivel = disponivel;
+	this.avaliacao = avaliacao
+	this.caracteristicas = caracteristicas
+	this.tags = tags;
+	this.porcentagemDesconto = porcentagemDesconto;
+
+	this.imprimeTags = function() {
+		this.tags.forEach((currentTag) => {
+			console.log(currentTag);
+		})
+	};
+
+	this.imprimeCaracteristicas = function() {
+		console.log(this.caracteristicas.join(", "));
+	};
+
+	this.getPrecoDesconto = function() {
+		return this.preco * (this.porcentagemDesconto == 0 ? 1 : this.porcentagemDesconto / 100)
+	}
+
+	this.getPrecoFinal = function() {
+		return this.preco - this.getPrecoDesconto()
+	};
+
+	this.imprimePrecoComDesconto = function() {
+		console.log(`R$ ${this.getPrecoFinal()} ${this.porcentagemDesconto==0?"":"(Desconto de " + this.porcentagemDesconto + "%)"}`)
+	};
 }
 
-console.log(pessoa.nome);
+let produto1 = new Produto(
+  "xiamomi",
+  1000,
+  "cel 15 polegadas",
+	"/caminho/imagem,",
+  true,
+  5,
+  ["15 polegadas", "android 5.3"], ["celular", "xiaomi"],
+  2
+)
 
-pessoa.nome = "Julia";
+function generateProductCard(produto) {
 
-console.log(pessoa.nome);
-
-pessoa.cidade = "Foz do Iguaçu";
-
-console.log (pessoa.cidade);
-
-console.log(pessoa);
-
-delete pessoa.profissão;
-
-console.log(pessoa);
-
-let xaiomi ={
-  nome:"Xaiomi poco x6 pro",
-  preco:"$350",
-  descricao:"Smartphone da xaiomi",
-  imagem:"src/imagem1.png",
-  disponivel:"true",
-  avaliacao:"4.5",
-  caracteristicas:[
-    "tela", 
-    "camera", 
-    "wi-fi"
-  ],
-  tags:[
-    "telefonia",
-    "xaiomi",
-    "eletronicos"
-  ],
-  imprimeTag: function(){
-    console.log(this.tags);
-  },
-  imprimeCaracteristica: function(){
-    console.log(this.caracteristicas);
-  }
 }
-
-let samsung ={
-  nome:"samsung Galaxy Note 20k",
-  preco:"$400",
-  descricao:"Smartphone da samsung",
-  imagem:"src/imagem2.png",
-  disponivel:"false",
-  avaliacao:"4.0",
-  caracteristicas:[
-    "tela", 
-    "camera", 
-    "wi-fi"
-  ],
-  tags:[
-    "telefonia",
-    "samsung",
-    "eletronicos"
-  ],
-  imprimeTag: function(){
-    console.log(this.tags);
-  },
-  imprimeCaracteristica: function(){
-    console.log(this.caracteristicas);
-  }
-}
-
-let nintendoSwitch ={
-  nome:"Nintendo Switch ed. especial, Zelda 30th anniversary",
-  preco:"$375",
-  descricao:"Console da nintendo, edição especial que inclui jogo",
-  imagem:"src/imagem3.png",
-  disponivel:"false",
-  avaliacao:"4.5",
-  caracteristicas:[
-    "portatil", 
-    "armazenamento de 500gbs", 
-    "jogo incluso"
-  ],
-  tags:[
-    "console",
-    "nintendo",
-    "eletronicos"
-  ],
-  imprimeTag: function(){
-    console.log(this.tags);
-  },
-  imprimeCaracteristica: function(){
-    console.log(this.caracteristicas);
-  }
-}
-
-let LG ={
-  nome:"TV LG 40 polegadas",
-  preco:"$250",
-  descricao:"Smart TV da LG",
-  imagem:"src/imagem4.png",
-  disponivel:"true",
-  avaliacao:"3.0",
-  caracteristicas:[
-    "tela", 
-    "40polegadas", 
-    "wi-fi",
-    "smart"
-  ],
-  tags:[
-    "eletronicos",
-    "lg"
-  ],
-  imprimeTag: function(){
-    console.log(this.tags);
-  },
-  imprimeCaracteristica: function(){
-    console.log(this.caracteristicas);
-  }
-}
-
-nintendoSwitch.imprimeCaracteristica();
-
-let listaDeProdutos = [xaiomi, nintendoSwitch, LG, samsung];
-
-console.log(listaDeProdutos);
