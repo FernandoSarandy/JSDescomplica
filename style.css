@@ -15,6 +15,12 @@ h3{
   flex-direction: column;
 }
 
+.areaProdutos{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .botaoProduto{
   border-radius: 10px;
   margin: 5px;

@@ -1,3 +1,5 @@
+//construtor
+
 function Produto(nome, preco,
 	descricao, imagem,
 	disponivel, avaliacao,
@@ -36,8 +38,10 @@ function Produto(nome, preco,
 	};
 }
 
+//declaracoes variaveis
+
 let produto1 = new Produto(
-  "xiamomi",
+  "xiaomi",
   1000,
   "cel 15 polegadas",
 	"/src/imagem1.png",
@@ -45,7 +49,7 @@ let produto1 = new Produto(
   5,
   ["15 polegadas", "android 5.3"],
 	["celular", "xiaomi"],
-  2
+  0
 )
 
 let produto2 = new Produto(
@@ -85,17 +89,26 @@ let produto4 = new Produto(
 )
 
 const produtos = [produto1, produto2, produto3, produto4];
-
+const fundoPagina = document.getElementById('fundoPagina');
 const botoes = document.createElement('div');
+const areaProdutos = document.createElement('div');
+
+//elementos
 botoes.classList.add('botoes');
+fundoPagina.classList.add('fundoPagina');
+fundoPagina.appendChild(botoes);
+fundoPagina.appendChild(areaProdutos);
+areaProdutos.classList.add('areaProdutos')
+
 produtos.forEach(produto => {
 	const botao = document.createElement('button');
 	botao.textContent = produto.nome;
 	botao.classList.add('botaoProduto');
-	botao.onclick = () => mostrarProduto(produto.nome);
+	botao.onclick = () => criaCard(produto);
 	botoes.appendChild(botao);
 })
 
+//funcoes
 function criaCard(produto){
 	var fundoPai = document.createElement('div');
 	fundoPai.classList.add('fundoPai');
@@ -137,7 +150,5 @@ function criaCard(produto){
 			}
 		</div>
 	`;
-	document.getElementById('fundoPagina').appendChild(fundoPai);
+	areaProdutos.appendChild(fundoPai);
 }
-
-document.getElementById('fundoPagina').appendChild(botoes);
