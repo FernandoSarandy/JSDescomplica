@@ -11,7 +11,13 @@ h3{
 }
 
 .fundoPagina{
-  display: flex
+  display: flex;
+  flex-direction: column;
+}
+
+.botaoProduto{
+  border-radius: 10px;
+  margin: 5px;
 }
 
 .fundoPai{
@@ -24,7 +30,7 @@ h3{
   margin: 10px;
 }
 
-#imagem{
+.imagemProduto{
   max-height: 300px;
 }
 
@@ -34,7 +40,7 @@ h3{
   margin-bottom: 10px;
 }
 
-#descontoProduto{
+.descontoProduto{
   background-color: green;
   border-radius: 15px;
   padding-right:20px;
