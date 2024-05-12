@@ -92,6 +92,7 @@ const produtos = [produto1, produto2, produto3, produto4];
 const fundoPagina = document.getElementById('fundoPagina');
 const botoes = document.createElement('div');
 const areaProdutos = document.createElement('div');
+const botaoLimpar = document.createElement('button');
 
 //elementos
 botoes.classList.add('botoes');
@@ -99,6 +100,11 @@ fundoPagina.classList.add('fundoPagina');
 fundoPagina.appendChild(botoes);
 fundoPagina.appendChild(areaProdutos);
 areaProdutos.classList.add('areaProdutos')
+botaoLimpar.textContent = 'Limpar Cards';
+botaoLimpar.classList.add('botaoProduto');
+botaoLimpar.onclick = () => limparCards();
+botoes.appendChild(botaoLimpar);
+
 
 produtos.forEach(produto => {
 	const botao = document.createElement('button');
@@ -108,7 +114,13 @@ produtos.forEach(produto => {
 	botoes.appendChild(botao);
 })
 
+
 //funcoes
+
+function limparCards(){
+	document.querySelectorAll('.fundoPai').forEach(elemento => elemento.remove());
+}
+
 function criaCard(produto){
 	var fundoPai = document.createElement('div');
 	fundoPai.classList.add('fundoPai');
