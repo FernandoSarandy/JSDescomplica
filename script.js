@@ -1,38 +1,75 @@
-class Carro{
-	marca;
-	modelo;
-	ano;
-	cor;
-	ligado;
-	constructor(marca, modelo, ano, cor, ligado){
-		this.marca = marca;
-		this.modelo = modelo;
-		this.ano = ano;
-		this.cor = cor;
-		this.ligado = ligado;
+class Pessoa {
+	#nome;
+	#idade;
+	#email;
+
+	constructor(nome, idade, email) {
+			this.setNome(nome);
+			this.setIdade(idade);
+			this.setEmail(email);
 	}
 
-	ligaCarro(){
-		if (this.ligado != true){
-			this.ligado = true;
-		}
-		console.log(`O carro está ligado`);
+	getNome() {
+			return this.#nome;
 	}
 
-	desligaCarro(){
-		if(this.ligado != false){
-			this.ligado = false;
-		}
-		console.log(`O carro está desligado`)
+	setNome(nome) {
+		
+			//utiliza RegEx para validar se o nome contem números
+			if (/\d/.test(nome)) {
+					throw new Error("O nome não pode conter números.");
+			}
+			this.#nome = nome;
 	}
 
-	pintar(cor){
-		this.cor = cor;
+	getIdade() {
+			return this.#idade;
 	}
 
-	info(){
-		console.log(`${this.marca} ${this.modelo} ${this.ano}. O carro está ${this.ligado? 'ligado':'desligado'}`);
+	setIdade(idade) {
+
+			//contrario to exemplo acima, aqui basta perguntar se o tipo da variavel é numero ou não além de verificar se é positiva ou não
+			if (typeof idade !== 'number' || idade <= 0) {
+					throw new Error("Idade deve ser um número positivo.");
+			}
+			this.#idade = idade;
+	}
+
+	getEmail() {
+			return this.#email;
+	}
+
+	setEmail(email) {
+
+			//RegEx para valdiar a logica do email, se contem o formato correto
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+			if (!emailRegex.test(email)) {
+					throw new Error("Email inválido.");
+			}
+			this.#email = email;
 	}
 }
 
-let meuCarro = new Carro("Honda", "Civic", 1990, "prata", false);
+try {
+
+	const pessoa = new Pessoa("João Silva", 30, "joao.silva@example.com");
+	//o que era antes, acessando via o método get
+	console.log(pessoa.getNome());
+	console.log(pessoa.getIdade());
+	console.log(pessoa.getEmail());
+
+	//alterando o atributo privado via o método set
+	pessoa.setNome("Maria Oliveira");
+	console.log(pessoa.getNome());
+
+	pessoa.setIdade(25);
+	console.log(pessoa.getIdade());
+
+	pessoa.setEmail("maria.oliveira@example.com");
+	console.log(pessoa.getEmail());
+
+} catch (error) {
+
+	console.error(error.message);
+}
