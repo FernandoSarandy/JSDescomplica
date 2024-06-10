@@ -91,8 +91,9 @@ let produto4 = new Produto(
 const produtos = [produto1, produto2, produto3, produto4];
 const fundoPagina = document.getElementById('fundoPagina');
 const botoes = document.createElement('div');
-const areaProdutos = document.createElement('div');
 const botaoLimpar = document.createElement('button');
+const areaProdutos = document.createElement('div');
+
 
 //elementos
 botoes.classList.add('botoes');
