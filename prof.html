@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atributos</title>
+</head>
+<body>
+    <script>
+        /*
+        O que são Atributos?
+        Atributos são as características que definem um objeto. 
+        Em uma classe que representa um carro, por exemplo, os atributos 
+        podem ser: cor, modelo, ano, placa, etc.
+
+        Atributos públicos: Funcionam como vitrines em uma loja, expondo seus 
+        valores para qualquer um que os queira acessar. São declarados sem modificadores 
+        especiais e podem ser acessados e modificados de qualquer lugar do seu código.
+
+        */
+        
+        class Carro {
+            cor; // Atributos públicos
+            modelo;
+
+            constructor(cor, modelo) {
+                this.cor = cor;
+                this.modelo = modelo;
+            }
+        }
+        /*
+        Por que não usar?
+        -Segurança comprometida: Dados sensíveis ou internos podem ser acessados e modificados por qualquer parte do código
+        -Dificuldade de Manutenção: O código se torna menos modular e mais difícil de manter, pois as modificações em um atributo 
+        público podem ter efeitos colaterais imprevisíveis em outras partes do programa.
+        -Modificações Acidentais: Atributos públicos podem ser modificados acidentalmente em qualquer lugar do código, levando a erros 
+        inesperados e bugs difíceis de encontrar.
+        -Excesso de Detalhes: Expor todos os atributos públicos pode tornar o código mais confuso e difícil de ler, 
+        dificultando a compreensão do seu funcionamento.
+        -Enfraquecimento do Encapsulamento: Um dos pilares da POO é o encapsulamento
+        -Coesão Diminuída: Classes com muitos atributos públicos podem ter baixa coesão, pois agrupam dados e funcionalidades sem uma relação clara entre eles, 
+        dificultando a reutilização e a manutenção.
+        */
+
+        /*const carro = new Carro("Vermelho", "Fiat Mobi");
+        console.log(A cor do carro é: ${carro.cor});
+        carro.cor = "Azul";
+        console.log(Nova cor do carro: ${carro.cor});*/
+        
+
+        /*
+        Atributos privados: São como segredos bem guardados, acessíveis apenas dentro da
+        classe onde foram declarados. 
+        Utilize o modificador # antes do nome do atributo para torná-lo privado.
+        Para acessar esses atributos, podemos usar os chamados getters e setters
+        */
+
+        class Pessoa {
+            #nome;
+            #cpf;
+            #dataNascimento;
+            constructor(nome, cpf, dataNascimento) {
+                this.#nome = nome;
+                this.#cpf = cpf;
+                this.#dataNascimento = dataNascimento;
+            }
+
+            getNome(){
+                if(this.#nome.length < 5){
+                    return "abc"
+                }
+                return this.#nome;
+            }
+
+        }
+
+        //pessoa1 = new Pessoa("Josué Augusto da Silva", "092.664,021-69", "1980-01-01")
+        //console.log(pessoa1.getNome())
+        //aumentando um pouco a complexidade
+
+        class ContaCorrente {
+
+            #numeroConta; // Atributo privado para o número da conta
+            #saldo; // Atributo privado para o saldo da conta
+            #nomeTitular; // Atributo privado para o nome do titular da conta
+            #transacoes; // Atributo privado para o histórico de transações
+
+            constructor(numeroConta, nomeTitular) {
+                this.#numeroConta = numeroConta;
+                this.#saldo = 0; // Saldo inicial zero
+                this.#nomeTitular = nomeTitular;
+                this.#transacoes = [];
+            }
+
+            getNumeroConta() {
+                return this.#numeroConta;
+            }
+
+            getSaldo() {
+                return this.#saldo;
+            }
+
+            getTitular() {
+                return this.#nomeTitular;
+            }
+
+            getTransacoes() {
+                return [...this.#transacoes]; // Retorna uma cópia do histórico de transações
+            }
+
+            depositar(valor) {
+                this.#validaValor(valor);
+                this.#saldo += valor;
+                this.#registraTransacao({ tipo: "deposito", valor: valor });
+            }
+
+            sacar(valor) {
+                this.#validaValor(valor);
+                if (valor > this.#saldo) {
+                    throw new Error("Saldo insuficiente.");
+                }
+                this.#saldo -= valor;
+                this.#registraTransacao({ tipo: "saque", valor: valor });
+            }
+
+            #validaValor(valor) {
+                if (valor <= 0) {
+                    throw new Error("Valor inválido. O valor deve ser maior que zero.");
+                }
+            }
+
+            #registraTransacao(transacao) {
+                this.#transacoes.push(transacao);
+            }
+        }
+
+        conta1 = new ContaCorrente("001462778", "Pedro da Silva")
+
+    </script>
+</body>
+</html>
