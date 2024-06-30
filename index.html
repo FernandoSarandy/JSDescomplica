@@ -1,16 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Pessoas</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h1>Gerenciamento de Pessoas</h1>
+    <form id="personForm">
+        <input type="hidden" id="personId">
+        <div>
+            <label for="personName">Nome:</label>
+            <input type="text" id="personName" required>
+        </div>
+        <div>
+            <label for="personDob">Data de Nascimento:</label>
+            <input type="date" id="personDob" required>
+        </div>
+        <div>
+            <label for="personCpf">CPF:</label>
+            <input type="text" id="personCpf" required>
+        </div>
+        <button type="submit">Salvar</button>
+    </form>
+    <h2>Lista de Pessoas</h2>
+    <ul id="personList" class="person-list"></ul>
 
-  <div id="fundoPagina">
-  </div>
-  
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,167 +1,88 @@
-//construtor
+document.addEventListener('DOMContentLoaded', () => {
+	const personForm = document.getElementById('personForm');
+	const personList = document.getElementById('personList');
 
-function Produto(nome, preco,
-	descricao, imagem,
-	disponivel, avaliacao,
-	caracteristicas, tags, porcentagemDesconto
-) {
-	this.nome = nome;
-	this.preco = preco;
-	this.descricao = descricao
-	this.imagem = imagem;
-	this.disponivel = disponivel;
-	this.avaliacao = avaliacao
-	this.caracteristicas = caracteristicas
-	this.tags = tags;
-	this.porcentagemDesconto = porcentagemDesconto;
+	personForm.addEventListener('submit', async (event) => {
+		event.preventDefault();
+		const id = document.getElementById('personId').value;
+		const name = document.getElementById('personName').value;
+		const dob = document.getElementById('personDob').value;
+		const cpf = document.getElementById('personCpf').value;
 
-	this.imprimeTags = function() {
-		this.tags.forEach((currentTag) => {
-			console.log(currentTag);
-		})
-	};
+		const personData = {
+			Id: id ? parseInt(id) : Date.now(),
+			Nome: name,
+			DataNascimento: dob,
+			CPF: cpf
+		};
 
-	this.imprimeCaracteristicas = function() {
-		console.log(this.caracteristicas.join(", "));
-	};
+		await createOrUpdatePerson(personData);
 
-	this.getPrecoDesconto = function() {
-		return this.preco * (this.porcentagemDesconto == 0 ? 1 : this.porcentagemDesconto / 100)
+		personForm.reset();
+
+		await loadPersonList();
+	});
+
+	personList.addEventListener('click', async (event) => {
+		if (event.target.classList.contains('delete-icon')) {
+			const personId = event.target.dataset.id;
+			await deletePersonById(personId);
+			await loadPersonList();
+		} else if (event.target.classList.contains('edit-icon')) {
+			const personId = event.target.dataset.id;
+			const person = await getPersonById(personId);
+			populateForm(person);
+		}
+	});
+
+	async function loadPersonList() {
+		const response = await fetch('https://personal-tp6a9zfc.outsystemscloud.com/Pessoas/rest/Pessoas/Pessoas');
+		const persons = await response.json();
+		loadList(persons);
 	}
 
-	this.getPrecoFinal = function() {
-		return this.preco - this.getPrecoDesconto()
-	};
+	async function createOrUpdatePerson(personData) {
+		await fetch('https://personal-tp6a9zfc.outsystemscloud.com/Pessoas/rest/Pessoas/CreateOrUpdatePessoa', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(personData)
+		});
+	}
 
-	this.imprimePrecoComDesconto = function() {
-		console.log(`R$ ${this.getPrecoFinal()} ${this.porcentagemDesconto==0?"":"(Desconto de " + this.porcentagemDesconto + "%)"}`)
-	};
-}
+	async function deletePersonById(personId) {
+		await fetch(`https://personal-tp6a9zfc.outsystemscloud.com/Pessoas/rest/Pessoas/DeletePessoaById?PessoaId=${personId}`, {
+			method: 'DELETE'
+		});
+	}
 
-//declaracoes variaveis
+	async function getPersonById(personId) {
+		const response = await fetch(`https://personal-tp6a9zfc.outsystemscloud.com/Pessoas/rest/Pessoas/Pessoas`);
+		const persons = await response.json();
+		return persons.find(person => person.Id == personId);
+	}
 
-let produto1 = new Produto(
-  "xiaomi",
-  1000,
-  "cel 15 polegadas",
-	"/src/imagem1.png",
-  true,
-  5,
-  ["15 polegadas", "android 5.3"],
-	["celular", "xiaomi"],
-  0
-)
+	function populateForm(person) {
+		document.getElementById('personId').value = person.Id;
+		document.getElementById('personName').value = person.Nome;
+		document.getElementById('personDob').value = person.DataNascimento;
+		document.getElementById('personCpf').value = person.CPF;
+	}
 
-let produto2 = new Produto(
-	"sansumg",
-	976.50,
-	"cel 16 polegadas",
-	"/src/imagem2.png",
-	true,
-	4.5,
-	["16 polegadas", "android 5.0"],
-	["celular", "xiamoi"],
-	5
-)
-
-let produto3 = new Produto(
-	"nokia",
-	800,
-	"cel 14 polegadas",
-	"/src/imagem3.png",
-	false,
-	3,
-	["14 polegadas", "android 4.8"],
-	["celular", "nokia"],
-	15
-)
-
-let produto4 = new Produto(
-	"motorolla",
-	1200,
-	"cel 16 polegadas",
-	"/src/imagem4.png",
-	true,
-	4,
-	["16 polegadas", "android 5.3"],
-	["celular", "motorolla"],
-	7
-)
-
-const produtos = [produto1, produto2, produto3, produto4];
-const fundoPagina = document.getElementById('fundoPagina');
-const botoes = document.createElement('div');
-const botaoLimpar = document.createElement('button');
-const areaProdutos = document.createElement('div');
-
-
-//elementos
-botoes.classList.add('botoes');
-fundoPagina.classList.add('fundoPagina');
-fundoPagina.appendChild(botoes);
-fundoPagina.appendChild(areaProdutos);
-areaProdutos.classList.add('areaProdutos')
-botaoLimpar.textContent = 'Limpar Cards';
-botaoLimpar.classList.add('botaoProduto');
-botaoLimpar.onclick = () => limparCards();
-botoes.appendChild(botaoLimpar);
-
-
-produtos.forEach(produto => {
-	const botao = document.createElement('button');
-	botao.textContent = produto.nome;
-	botao.classList.add('botaoProduto');
-	botao.onclick = () => criaCard(produto);
-	botoes.appendChild(botao);
-})
-
-
-//funcoes
-
-function limparCards(){
-	document.querySelectorAll('.fundoPai').forEach(elemento => elemento.remove());
-}
-
-function criaCard(produto){
-	var fundoPai = document.createElement('div');
-	fundoPai.classList.add('fundoPai');
-	fundoPai.innerHTML =`
-		<div class="tituloProduto">
-			<h1>${produto.nome}</h1>
-		</div>
-
-		<div class="descricaoProduto">
-			<h2>${produto.nome}</h2>
-		</div>
-
-		<div class="disponibilidadeProduto">
-			<h2>${produto.disponivel ? 'disponivel':'indisponivel'}</h2>
-		</div>
-
-		<div class="imagemProduto">
-			<img src="${produto.imagem}" alt="Imagem do Produto" class="imagemProduto">
-		</div>
-
-		<div class="tagProduto">
-			<h3>tags: ${produto.tags.join(', ')}</h3>
-		</div>
-
-		<div class="caracteristicasProduto">
-			<h3>caracteristicas: ${produto.caracteristicas.join(', ')}</h3>
-		</div>
-
-		<div class="fundoPrecoDesconto">
-			<div class="PrecoProduto">
-				<h3>preço: R$ ${produto.preco}</h3>
-			</div>
-			${
-				produto.porcentagemDesconto > 0 ? `
-				<div class="descontoProduto">
-					<h3>${produto.porcentagemDesconto}% de desconto!!</h3>
-				</div>
-				`:''
-			}
-		</div>
-	`;
-	areaProdutos.appendChild(fundoPai);
-}
+	function loadList(persons) {
+		personList.innerHTML = '';
+		persons.forEach(person => {
+			const li = document.createElement('li');
+			li.className = 'person-item';
+			li.innerHTML = `
+								<img src="src/edit-button.png" class="edit-icon" data-id="${person.Id}" alt="Editar">
+                <img src="src/delete.png" class="delete-icon" data-id="${person.Id}" alt="Deletar">
+								${person.Nome} (Nascimento: ${person.DataNascimento}, CPF: ${person.CPF})
+							`;
+			personList.appendChild(li);
+		});
+	}
+	
+	loadPersonList();
+});
